@@ -51,7 +51,7 @@ public class ConnexionController {
 			session.setAttribute("USER_NAME", USER_NAME);
 			session.setAttribute("USER_TYPE", USER_TYPE);
 			session.setAttribute("Compte", compte);
-			System.out.println("CONNEXION EFFECTUEE AVEC SUCCES");
+			System.out.println("CONNEXION EFFECTUEE AVEC SUCCES "+USER_TYPE);
 		}
 		else System.out.println("COMPTE INEXISTANT");
 		
