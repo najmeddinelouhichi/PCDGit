@@ -4,10 +4,13 @@ package com.ourteam.pcd.entities;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ourteam.pcd.entities.Enseignant;
 
 
@@ -19,8 +22,8 @@ public class DocumentDeClasse extends Document {
 	
 	public DocumentDeClasse () {}
 	
-	@ManyToOne
-	@JoinColumn(name="idEnseignant",nullable=false,unique=true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idEnseignant",nullable=false,unique=false)
 	Enseignant enseignant;
 
 	public Enseignant getEnseignant() {
@@ -31,12 +34,12 @@ public class DocumentDeClasse extends Document {
 		this.enseignant = enseignant;
 	}
 
-	public DocumentDeClasse(Long id, String nom,Enseignant enseignant) {
-		super(id, nom);
+	public DocumentDeClasse(Long id, String nom,Enseignant enseignant, String nomOriginal) {
+		super(id, nom, nomOriginal);
 		this.enseignant = enseignant;
 	} 
-	
-	@OneToMany(mappedBy="documentConcerne")
+	@JsonIgnore
+	@OneToMany(mappedBy="documentConcerne", fetch=FetchType.EAGER)
 	private Set<Autorisation> autorisations;
 
 	public Set<Autorisation> getAutorisations() {
@@ -46,6 +49,16 @@ public class DocumentDeClasse extends Document {
 	public void setAutorisations(Set<Autorisation> autorisations) {
 		this.autorisations = autorisations;
 	}
-	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idMatiere",nullable=false,unique=false)
+	private Matiere matiereConcernee;
+
+	public Matiere getMatiereConcernee() {
+		return matiereConcernee;
+	}
+
+	public void setMatiereConcernee(Matiere matiereConcernee) {
+		this.matiereConcernee = matiereConcernee;
+	}
 	
 }

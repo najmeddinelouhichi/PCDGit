@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ourteam.pcd.entities.DocumentDeClasse;
+import com.ourteam.pcd.entities.Enseignant;
+import com.ourteam.pcd.entities.Matiere;
 import com.ourteam.pcd.persistence.dao.DocumentDeClasseRepository;
 
 @Service
@@ -52,7 +54,7 @@ public class DocumentDeClasseServiceImpl implements DocumentDeClasseService {
 		List<DocumentDeClasse> all = this.findAll();
 		ArrayList<DocumentDeClasse> res = new ArrayList<>();
 		for(int i=0;i<all.size();i++) {
-			if(all.get(i).getNom().contains(arg0))
+			if(all.get(i).getNomOriginal().contains(arg0))
 				res.add(all.get(i));
 		}
 		String[] words = arg0.split(" ");
@@ -60,11 +62,20 @@ public class DocumentDeClasseServiceImpl implements DocumentDeClasseService {
 			if(res.contains((DocumentDeClasse)(all.get(i))))
 					continue;
 			for(int j=0;j< words.length;j++) {
-				if(all.get(i).getNom().contains(words[j]))
+				if(all.get(i).getNomOriginal().contains(words[j]))
 					res.add(all.get(i));
 			}		
 		}		
 		return res;
 	}
 
+
+	@Override
+	public List<DocumentDeClasse> findByMatiereConcernee(Matiere matiere) {
+		return documentDeClasseDao.findByMatiereConcernee(matiere);	
+	}
+	
+	public List<DocumentDeClasse> findByEnseignant(Enseignant enseignant){
+		return documentDeClasseDao.findByEnseignant(enseignant);
+	}
 }
